@@ -1,0 +1,12 @@
+{
+  "name": "Immortal Frontier: Cultivation RPG",
+  "short_name": "Immortal Frontier",
+  "description": "Explore the Verdant Reach, hunt beasts, gather spirit herbs and refine your qi.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#101819",
+  "theme_color": "#111a1b",
+  "icons": []
+}

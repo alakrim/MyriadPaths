@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#111a1b">
+  <meta name="description" content="A playable mobile-first cultivation RPG prototype. Explore the Verdant Reach, gather herbs, fight beasts, and refine your qi.">
+  <title>Immortal Frontier · Cultivation RPG</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">☯</div>
+      <div class="brand-copy">
+        <div class="brand-title">IMMORTAL <span>FRONTIER</span></div>
+        <div class="brand-subtitle">A cultivation frontier</div>
+      </div>
+      <div class="location-pill"><span class="location-dot"></span><span id="locationName">Verdant Reach</span></div>
+      <button class="icon-button save-button" id="saveButton" aria-label="Save game" title="Save game">↧</button>
+      <button class="icon-button" id="settingsButton" aria-label="Settings" title="Settings">⚙</button>
+    </header>
+
+    <section class="status-strip" aria-label="Character status">
+      <div class="character-chip character-edit" id="characterButton" role="button" tabindex="0" title="Create or edit character"><span class="avatar-glyph">劍</span><div><strong id="heroName">Wandering Disciple</strong><small id="realmLabel">Body Tempering · Stage 2</small></div></div>
+      <div class="vitals">
+        <div class="vital-row"><span class="vital-icon hp-icon">♥</span><div class="bar-track"><div class="bar-fill hp-fill" id="hpBar"></div></div><small id="hpText">100 / 100</small></div>
+        <div class="vital-row"><span class="vital-icon qi-icon">✦</span><div class="bar-track"><div class="bar-fill qi-fill" id="qiBar"></div></div><small id="qiText">24 / 100 qi</small></div>
+      </div>
+      <div class="currency-chip"><span>◇</span><div><strong id="stoneCount">12</strong><small>spirit stones</small></div></div>
+      <div class="status-aptitude"><small>SPIRIT ROOT</small><strong id="aptitudeLabel">Wood · Grade II</strong></div>
+    </section>
+
+    <main class="workspace">
+      <aside class="left-rail panel-frame">
+        <div class="panel-heading"><div><small class="eyebrow">YOUR JOURNEY</small><h2>Field Notes</h2></div><span class="panel-corner">✧</span></div>
+        <div class="mini-quest" id="miniQuest"></div>
+        <div class="rail-divider"></div>
+        <div class="map-title-row"><h3>Region Chart</h3><span class="tiny-label">LOCAL</span></div>
+        <div class="mini-map-wrap"><canvas id="miniMap" width="180" height="150" aria-label="Local region map"></canvas></div>
+        <div class="map-legend"><span><i class="legend-player"></i>You</span><span><i class="legend-herb"></i>Herb</span><span><i class="legend-danger"></i>Threat</span></div>
+        <div class="rail-divider"></div>
+        <div class="field-tip"><div class="tip-icon">☯</div><div><strong>Path of restraint</strong><p>Preparation is a weapon. A retreat can save years of cultivation.</p></div></div>
+      </aside>
+
+      <section class="game-stage" aria-label="Game world">
+        <div class="stage-topline"><span class="weather-icon">☼</span><span id="weatherLabel">Clear skies · Late afternoon</span><span class="stage-coords" id="coordsLabel">17, 19</span></div>
+        <canvas id="worldCanvas" tabindex="0" aria-label="Game world. Tap a tile to move." ></canvas>
+        <div class="world-hint" id="worldHint"><span class="hint-key">TAP</span> Select a tile to walk · Approach a character to interact</div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <div class="target-card" id="targetCard" hidden></div>
+        <div class="mobile-dpad" aria-label="Movement controls">
+          <button data-dir="up" aria-label="Move north">▲</button>
+          <div><button data-dir="left" aria-label="Move west">◀</button><button data-dir="down" aria-label="Move south">▼</button><button data-dir="right" aria-label="Move east">▶</button></div>
+        </div>
+      </section>
+
+      <aside class="right-panel panel-frame" id="rightPanel">
+        <div class="panel-tabs" role="tablist" aria-label="Character panels">
+          <button class="panel-tab active" data-panel="journey" role="tab" aria-selected="true">Journey</button>
+          <button class="panel-tab" data-panel="bag" role="tab" aria-selected="false">Bag</button>
+          <button class="panel-tab" data-panel="cultivation" role="tab" aria-selected="false">Qi</button>
+        </div>
+        <div class="panel-content" id="panelContent"></div>
+        <div class="combat-log-wrap"><div class="log-head"><strong>FIELD RECORD</strong><span class="live-dot"></span></div><div id="combatLog" class="combat-log"></div></div>
+      </aside>
+    </main>
+
+    <footer class="actionbar">
+      <div class="action-context"><small>SELECTED</small><strong id="selectedLabel">No target</strong></div>
+      <div class="action-buttons">
+        <button class="action-button interact-action" id="interactButton"><span class="action-glyph">✋</span><span>Interact</span><kbd>E</kbd></button>
+        <button class="action-button attack-action" id="attackButton"><span class="action-glyph">⚔</span><span>Strike</span><kbd>1</kbd></button>
+        <button class="action-button spell-action" id="spellButton"><span class="action-glyph">✦</span><span>Spirit Bolt</span><kbd>2</kbd></button>
+        <button class="action-button heal-action" id="healButton"><span class="action-glyph">◉</span><span>Healing Pill</span><kbd>3</kbd></button>
+        <button class="action-button meditate-action" id="meditateButton"><span class="action-glyph">☯</span><span>Meditate</span><kbd>Q</kbd></button>
+        <button class="action-button breakthrough-action" id="breakthroughButton"><span class="action-glyph">✧</span><span>Breakthrough</span></button>
+      </div>
+      <div class="hotbar-tools"><button id="questButton" class="tool-button">✧ <span>Quest</span></button><button id="bagButton" class="tool-button">▤ <span>Bag</span></button><button id="qiButton" class="tool-button">☯ <span>Cultivate</span></button></div>
+    </footer>
+  </div>
+  <div class="modal-scrim" id="modalScrim" hidden>
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-icon" id="modalIcon">☯</div><div class="modal-eyebrow" id="modalEyebrow">FIELD ENCOUNTER</div><h2 id="modalTitle">Elder Shen</h2><div id="modalBody" class="modal-body"></div>
+      <div class="modal-actions" id="modalActions"><button class="primary-button" id="modalOkay">Understood</button></div>
+    </section>
+  </div>
+  <script src="src/game-core.bundle.js"></script>
+  <script src="src/game.bundle.js"></script>
+</body>
+</html>

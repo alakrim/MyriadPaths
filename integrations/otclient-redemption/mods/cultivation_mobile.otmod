@@ -1,0 +1,9 @@
+Module
+  name: cultivation_mobile
+  description: Mobile touch controls for Cultivation Tibia Mobile
+  author: Cultivation Tibia Mobile
+  website: https://github.com/opentibiabr/otclient
+  sandboxed: true
+  scripts: [ cultivation_mobile ]
+  @onLoad: init()
+  @onUnload: terminate()
